@@ -2,56 +2,58 @@ import { ClientSchema, type Client } from '../types';
 
 interface VendaRaw {
   data: string;
-  valor: number;
+  value: number;
 }
 
 interface ClienteRaw {
   info?: {
-    nomeCompleto?: string;
-    detalhes?: {
+    name?: string;
+    details?: {
       email?: string;
-      nascimento?: string;
+      birthdate?: string;
     };
   };
-  duplicado?: {
-    nomeCompleto?: string;
+  duplicated?: {
+    name?: string;
   };
-  estatisticas?: {
-    vendas?: VendaRaw[];
+  statistics?: {
+    sales?: VendaRaw[];
   };
 }
 
 interface ApiResponse {
   data?: {
-    clientes?: ClienteRaw[];
+    clients?: ClienteRaw[];
   };
 }
 
-export function parseClientsResponse(payload: unknown): Client[] {
-  const raw = (payload as ApiResponse)?.data?.clientes ?? [];
+function parseClientsResponse(payload: unknown): Client[] {
+  const raw = (payload as ApiResponse)?.data?.clients ?? [];
   const result: Client[] = [];
   const seen = new Set<string>();
 
   for (const node of raw) {
     const info = node?.info ?? {};
-    const detalhes = info?.detalhes ?? {};
-    const nome = String(info?.nomeCompleto ?? node?.duplicado?.nomeCompleto ?? '').trim();
-    const email = String(detalhes?.email ?? '').trim();
-    const nascimento = String(detalhes?.nascimento ?? '').trim();
+    const details = info?.details ?? {};
+    const name = String(info?.name ?? node?.duplicated?.name ?? '').trim();
+    const email = String(details?.email ?? '').trim();
+    const birthdate = String(details?.birthdate ?? '').trim();
 
-    const vendas = Array.isArray(node?.estatisticas?.vendas)
-      ? node.estatisticas!.vendas!.map((v) => ({
+    const sales = Array.isArray(node?.statistics?.sales)
+      ? node.statistics!.sales!.map((v) => ({
         data: String(v.data),
-        valor: Number(v.valor) || 0,
+        valor: Number(v.value) || 0,
       }))
       : [];
 
-    const key = `${nome}__${email || 'noemail'}`;
-    if (!nome || seen.has(key)) continue;
+    const key = `${name}__${email || 'noemail'}`;
+    if (!name || seen.has(key)) continue;
     seen.add(key);
 
-    result.push(ClientSchema.parse({ id: btoa(key), nome, email, nascimento, vendas }));
+    result.push(ClientSchema.parse({ id: btoa(key), name, email, birthdate, sales }));
   }
 
   return result;
 }
+
+export { parseClientsResponse };

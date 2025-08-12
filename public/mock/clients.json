@@ -1,31 +1,31 @@
 {
   "data": {
-    "clientes": [
+    "clients": [
       {
         "info": {
-          "nomeCompleto": "Ana Beatriz",
-          "detalhes": {
+          "name": "Ana Beatriz",
+          "details": {
             "email": "ana.b@example.com",
-            "nascimento": "1992-05-01"
+            "birthdate": "1992-05-01"
           }
         },
-        "estatisticas": {
-          "vendas": [
-            { "data": "2024-01-01", "valor": 150 },
-            { "data": "2024-01-02", "valor": 50 }
+        "staticts": {
+          "sales": [
+            { "data": "2024-01-01", "value": 150 },
+            { "data": "2024-01-02", "value": 50 }
           ]
         }
       },
       {
         "info": {
-          "nomeCompleto": "Carlos Eduardo",
-          "detalhes": {
+          "name": "Carlos Eduardo",
+          "details": {
             "email": "cadu@example.com",
-            "nascimento": "1987-08-15"
+            "birthdate": "1987-08-15"
           }
         },
-        "duplicado": { "nomeCompleto": "Carlos Eduardo" },
-        "estatisticas": { "vendas": [] }
+        "duplicated": { "name": "Carlos Eduardo" },
+        "staticts": { "sales": [] }
       }
     ]
   },

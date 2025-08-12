@@ -1,6 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
 
-export const GlobalStyle = createGlobalStyle`
+const GlobalStyle = createGlobalStyle`
   :root {
     --brand: #026CB6;
     --bg: #0f172a; --card: #111827; --text: #e5e7eb; --muted: #9ca3af;
@@ -13,7 +13,10 @@ export const GlobalStyle = createGlobalStyle`
   ::-webkit-scrollbar-thumb { background: var(--brand); border-radius: 8px; }
   ::-webkit-scrollbar-track { background: #1f2937; }
 `;
-export const theme = {
+const theme = {
   colors: { brand: 'var(--brand)', text: 'var(--text)' },
   shadow: '0 1px 4px rgba(4,30,66,0.16)',
 } as const;
+
+
+export { GlobalStyle, theme };

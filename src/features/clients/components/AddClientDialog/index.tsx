@@ -1,82 +1,44 @@
 import type { Client } from '@/features/clients/types';
 import { useState } from 'react';
-import styled from 'styled-components';
+import { Actions, Backdrop, Button, Field, Input, Modal, Row } from './addClientDialog.styles';
 
-const Backdrop = styled.div`
-  position: fixed;
-  inset: 0;
-  background: #0008;
-  display: grid;
-  place-items: center;
-  z-index: 20;
-`;
-const Modal = styled.div`
-  width: 100%;
-  max-width: 560px;
-  background: var(--card);
-  border: 1px solid #1f2937;
-  border-radius: 16px;
-  padding: 20px;
-`;
-const Row = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin: 8px 0;
-  @media (max-width: 640px) {
-    grid-template-columns: 1fr;
-  }
-`;
-const Field = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-`;
-const Input = styled.input`
-  background: #0b1222;
-  color: var(--text);
-  border: 1px solid #334155;
-  padding: 10px 12px;
-  border-radius: 10px;
-  &:focus {
-    outline: none;
-    border-color: var(--brand);
-  }
-`;
-const Actions = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  gap: 8px;
-  margin-top: 12px;
-`;
-const Button = styled.button<{ ghost?: boolean }>`
-  padding: 10px 12px;
-  border-radius: 10px;
-  cursor: pointer;
-  font-weight: 600;
-  background: ${(p) => (p.ghost ? 'transparent' : 'var(--brand)')};
-  color: ${(p) => (p.ghost ? 'var(--text)' : '#fff')};
-  border: ${(p) => (p.ghost ? '1px solid #334155' : 'none')};
-`;
+type AddClientInput = Omit<Client, 'id' | 'sales'>;
 
-export function AddClientDialog({
-  onClose,
-  onSubmit,
-}: {
+interface AddClientDialogProps {
   onClose: () => void;
-  onSubmit: (c: Omit<Client, 'id' | 'vendas'>) => void;
-}) {
-  const [nome, setNome] = useState('');
-  const [email, setEmail] = useState('');
-  const [nascimento, setNascimento] = useState('');
+  onSubmit: (c: AddClientInput) => void;
+}
+
+const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+
+function AddClientDialog({ onClose, onSubmit }: AddClientDialogProps) {
+  const [nameState, setNameState] = useState('');
+  const [emailState, setEmailState] = useState('');
+  const [birthdateState, setBirthdateState] = useState('');
   const [error, setError] = useState('');
 
-  const submit = (e: React.FormEvent) => {
+  const submit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!nome) return setError('Informe o nome');
-    if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return setError('E-mail inválido');
-    if (!nascimento) return setError('Informe a data de nascimento');
-    onSubmit({ nome, email, nascimento });
+
+    if (!nameState) {
+      setError('Informe o nome');
+      return;
+    }
+    if (!EMAIL_RE.test(emailState)) {
+      setError('E-mail inválido');
+      return;
+    }
+    if (!birthdateState) {
+      setError('Informe a data de nascimento');
+      return;
+    }
+
+    setError('');
+    onSubmit({
+      name: nameState,
+      email: emailState,
+      birthdate: birthdateState,
+    });
   };
 
   return (
@@ -86,15 +48,15 @@ export function AddClientDialog({
         <form onSubmit={submit}>
           <Field>
             <label>Nome completo</label>
-            <Input value={nome} onChange={(e) => setNome(e.target.value)} required />
+            <Input value={nameState} onChange={(e) => setNameState(e.target.value)} required />
           </Field>
           <Row>
             <Field>
               <label>Email</label>
               <Input
                 type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={emailState}
+                onChange={(e) => setEmailState(e.target.value)}
                 required
               />
             </Field>
@@ -102,8 +64,8 @@ export function AddClientDialog({
               <label>Data de nascimento</label>
               <Input
                 type="date"
-                value={nascimento}
-                onChange={(e) => setNascimento(e.target.value)}
+                value={birthdateState}
+                onChange={(e) => setBirthdateState(e.target.value)}
                 required
               />
             </Field>
@@ -120,3 +82,5 @@ export function AddClientDialog({
     </Backdrop>
   );
 }
+
+export { AddClientDialog };

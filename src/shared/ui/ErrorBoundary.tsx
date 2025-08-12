@@ -1,7 +1,7 @@
 import React from 'react';
 
 type State = { hasError: boolean; error?: Error };
-export class ErrorBoundary extends React.Component<React.PropsWithChildren, State> {
+class ErrorBoundary extends React.Component<React.PropsWithChildren, State> {
   state: State = { hasError: false };
   static getDerivedStateFromError(error: Error) {
     return { hasError: true, error };
@@ -21,3 +21,4 @@ export class ErrorBoundary extends React.Component<React.PropsWithChildren, Stat
     return this.props.children;
   }
 }
+export { ErrorBoundary };

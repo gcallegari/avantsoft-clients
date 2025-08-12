@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { firstMissingLetter } from '../src/shared/lib/strings';
 
 describe('firstMissingLetter', () => {
@@ -10,6 +10,6 @@ describe('firstMissingLetter', () => {
     expect(firstMissingLetter(pangram)).toBe('-');
   });
   it('handles accents and spaces', () => {
-    expect(firstMissingLetter('Âna Béatriz')).toBe('c'); // after normalizing, missing 'c'
+    expect(firstMissingLetter('Âna Béatriz')).toBe('c');
   });
 });
