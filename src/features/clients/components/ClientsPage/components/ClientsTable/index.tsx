@@ -6,7 +6,6 @@ import { LeadersMap } from '../Tr/tr.types';
 function ClientsTable({ rows, leaders }: { rows: Client[]; leaders: LeadersMap }) {
   return (
     <Table role="table">
-      <caption className="sr-only">Clientes e estatísticas</caption>
       <thead>
         <tr>
           <th scope="col">Indicador</th>

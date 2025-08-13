@@ -19,7 +19,6 @@ import { Badge } from './components/Tr/tr.styles';
 export function ClientsPage() {
   const { list, loading, error, addClient, salesByDay, leaders } = useClients();
   const [search, setSearch] = useState('');
-  const [sortBy, setSortBy] = useState<'name' | 'total' | 'freq'>('name');
   const [showAdd, setShowAdd] = useState(false);
 
   const deferredSearch = useDeferredValue(search);
@@ -36,19 +35,8 @@ export function ClientsPage() {
       return name.includes(searchNorm) || email.includes(searchNorm);
     });
 
-    if (sortBy === 'name') {
-      return [...filtered].sort((a, b) => a.name.localeCompare(b.name, 'pt-BR'));
-    }
-    if (sortBy === 'total') {
-      return [...filtered].sort((a, b) => {
-        const ta = a.sales.reduce((s, v) => s + v.value, 0);
-        const tb = b.sales.reduce((s, v) => s + v.value, 0);
-        return tb - ta;
-      });
-    }
-
     return [...filtered].sort((a, b) => b.sales.length - a.sales.length);
-  }, [list, searchNorm, sortBy]);
+  }, [list, searchNorm]);
 
   return (
     <Layout>
@@ -63,18 +51,6 @@ export function ClientsPage() {
           <Button onClick={openAdd}>+ Adicionar cliente</Button>
         </HStack>
         <HStack>
-          <label style={{ color: 'var(--muted)' }}>
-            Ordenar por:{' '}
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
-              aria-label="Ordenar por"
-            >
-              <option value="name">Nome</option>
-              <option value="total">Total vendido</option>
-              <option value="freq">Frequência</option>
-            </select>
-          </label>
           {leaders.topVolume && <Badge variant="brand">Maior volume</Badge>}
           {leaders.topAverage && <Badge variant="ok">Maior média</Badge>}
           {leaders.topFrequency && <Badge variant="warn">Maior frequência</Badge>}

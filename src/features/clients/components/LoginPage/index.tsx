@@ -27,7 +27,7 @@ export function LoginPage() {
   return (
     <Card>
       <Title>Entrar</Title>
-      <Sub>Use qualquer e-mail e senha para esta demo</Sub>
+      <Sub>Use qualquer e-mail e senha</Sub>
       <form onSubmit={onSubmit}>
         <Field>
           <label>Email</label>

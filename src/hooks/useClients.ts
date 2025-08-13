@@ -23,7 +23,7 @@ export function useClients() {
   }, []);
 
   const addClient = useCallback((c: Omit<Client, 'id' | 'sales'>) => {
-    setList(prev => [{ ...c, id: crypto.randomUUID(), sales: [] }, ...prev]);
+    setList((prev) => [{ ...c, id: crypto.randomUUID(), sales: [] }, ...prev]);
   }, []);
 
   const salesByDay = useMemo(() => {

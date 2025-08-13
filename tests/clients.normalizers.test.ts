@@ -34,8 +34,8 @@ describe('parseClientsResponse', () => {
   it('normalizes and deduplicates clients', () => {
     const result = parseClientsResponse(payload);
     expect(result).toHaveLength(2);
-    const ana = result.find((c) => c.nome === 'Ana Beatriz')!;
+    const ana = result.find((c) => c.name === 'Ana Beatriz')!;
     expect(ana.email).toBe('ana.b@example.com');
-    expect(ana.vendas.reduce((s, v) => s + v.valor, 0)).toBe(200);
+    expect(ana.sales.reduce((s, v) => s + v.value, 0)).toBe(200);
   });
 });

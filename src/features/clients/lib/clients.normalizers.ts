@@ -1,49 +1,24 @@
 import { ClientSchema, type Client } from '../types';
 
-interface VendaRaw {
-  data: string;
-  value: number;
-}
+type VendaRaw = { data: string; valor: number };
 
-interface ClienteRaw {
-  info?: {
-    name?: string;
-    details?: {
-      email?: string;
-      birthdate?: string;
-    };
-  };
-  duplicated?: {
-    name?: string;
-  };
-  statistics?: {
-    sales?: VendaRaw[];
-  };
-}
-
-interface ApiResponse {
-  data?: {
-    clients?: ClienteRaw[];
-  };
-}
-
-function parseClientsResponse(payload: unknown): Client[] {
-  const raw = (payload as ApiResponse)?.data?.clients ?? [];
+export function parseClientsResponse(payload: unknown): Client[] {
+  const raw = (payload as any)?.data?.clientes ?? [];
   const result: Client[] = [];
   const seen = new Set<string>();
 
   for (const node of raw) {
     const info = node?.info ?? {};
-    const details = info?.details ?? {};
-    const name = String(info?.name ?? node?.duplicated?.name ?? '').trim();
-    const email = String(details?.email ?? '').trim();
-    const birthdate = String(details?.birthdate ?? '').trim();
+    const detalhes = info?.detalhes ?? {};
+    const name = String(info?.nomeCompleto ?? node?.duplicado?.nomeCompleto ?? '').trim();
+    const email = String(detalhes?.email ?? '').trim();
+    const birthdate = String(detalhes?.nascimento ?? '').trim();
 
-    const sales = Array.isArray(node?.statistics?.sales)
-      ? node.statistics!.sales!.map((v) => ({
-        data: String(v.data),
-        valor: Number(v.value) || 0,
-      }))
+    const sales = Array.isArray(node?.estatisticas?.vendas)
+      ? (node.estatisticas.vendas as VendaRaw[]).map((v) => ({
+          data: String(v.data),
+          value: Number(v.valor) || 0,
+        }))
       : [];
 
     const key = `${name}__${email || 'noemail'}`;
@@ -52,8 +27,5 @@ function parseClientsResponse(payload: unknown): Client[] {
 
     result.push(ClientSchema.parse({ id: btoa(key), name, email, birthdate, sales }));
   }
-
   return result;
 }
-
-export { parseClientsResponse };

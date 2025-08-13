@@ -1,7 +1,8 @@
-import { styled } from "styled-components";
+import { styled } from 'styled-components';
 
 const RowStyled = styled.tr<{ $highlight?: boolean }>`
-    outline: ${({ $highlight }) => $highlight ? '2px solid var(--brand)' : 'none'};`
+  outline: ${({ $highlight }) => ($highlight ? '2px solid var(--brand)' : 'none')};
+`;
 
 const Missing = styled.span`
   display: inline-flex;
