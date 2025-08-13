@@ -1,119 +1,117 @@
 # Avantsoft Clients — Desafio Técnico
 
-Aplicação em **React + TypeScript + styled-components** desenvolvida para o desafio técnico da Avantsoft.  
-Permite gerenciar clientes, visualizar estatísticas de vendas e aplicar tratamento a dados retornados por uma API com formato desorganizado.
-
-## 🚀 Tecnologias
-
-- [React](https://react.dev/)
-- [TypeScript](https://www.typescriptlang.org/)
-- [styled-components](https://styled-components.com/)
-- [Vite](https://vitejs.dev/)
-- [Recharts](https://recharts.org/)
-- [Zod](https://zod.dev/) (validações)
-- [date-fns](https://date-fns.org/)
+Aplicação desenvolvida com **React + TypeScript + styled-components** para o desafio técnico da Avantsoft.  
+Permite gerenciar clientes, visualizar estatísticas de vendas e tratar dados provenientes de uma API com estrutura não padronizada.
 
 ---
 
-## 📦 Instalação e execução
+## 🎯 Tecnologias
 
-> **Pré-requisito**: Node.js >= 18 (recomendado 20.x)
+- [React](https://react.dev/)  
+- [TypeScript](https://www.typescriptlang.org/)  
+- [styled-components](https://styled-components.com/)  
+- [Vite](https://vitejs.dev/)  
+- [Recharts](https://recharts.org/)  
+- [Zod](https://zod.dev/) — validação de dados  
+- [date-fns](https://date-fns.org/) — manipulação de datas  
+- [Vitest](https://vitest.dev/) — testes unitários  
+- [Prettier](https://prettier.io/) — formatação de código  
+
+---
+
+## 🚀 Instalação e execução
+
+**Pré-requisito:** Node.js ≥ 18 (recomendado: 20.x)
 
 ```bash
-# 1. Clone o repositório
-git clone https://github.com/seu-usuario/avantsoft-clients.git
-
+git clone https://github.com/gcallegari/avantsoft-clients.git
 cd avantsoft-clients
-
-# 2. Instale as dependências
 npm install
-
-# 3. Inicie o servidor de desenvolvimento
 npm run dev
 ```
 
 ---
 
-## 🔑 Login
+## 🔑 Login (simples)
 
-A autenticação é **simples e apenas no front-end** (não há backend real).  
-Use qualquer e-mail e qualquer senha não vazios.
-
-Exemplo:
+A autenticação é simulada e acontece apenas no front-end (não há backend).  
+Use qualquer e-mail e senha não vazios:
 
 ```
-Email: teste@example.com
+Email: teste@example.com  
 Senha: 123456
 ```
 
 ---
 
-## 📝 Funcionalidades
+## 📋 Funcionalidades
 
-- **Login** e logout (token armazenado no `localStorage`).
-- **Listagem de clientes** com dados tratados:
-  - Remove duplicados.
-  - Extrai apenas informações relevantes.
-  - Normaliza estrutura recebida.
-- **Adição de clientes** via modal.
-- **Busca** por nome ou e-mail.
-- **Gráfico** de vendas por dia (soma de todas as vendas no período).
-- **Métricas destacadas**:
-  - Cliente com maior **volume total** de vendas.
-  - Cliente com maior **média por venda**.
-  - Cliente com maior **frequência de compras**.
-- **Indicador alfabético**:
-  - Mostra a **primeira letra do alfabeto** que **não** aparece no nome completo do cliente.
-  - Exibe `"-"` se todas as letras de `a-z` estiverem presentes.
+- Login e logout (token armazenado em `localStorage`).  
+- Listagem de clientes com dados tratados:
+  - Remoção de duplicados.  
+  - Estrutura normalizada a partir da API “bagunçada”.  
+- Adição de clientes via modal.  
+- Busca por nome ou e-mail.  
+- Gráfico de vendas por dia (somatório).  
+- Destaques:
+  - Cliente com maior **volume total** de vendas.  
+  - Cliente com maior **média por venda**.  
+  - Cliente com maior **frequência de compras**.  
+- Indicador alfabético: mostra a primeira letra do alfabeto que **não aparece** no nome; exibe `-` se todas estiverem presentes.
 
 ---
 
-## 📂 Estrutura
+## 📂 Estrutura de pastas
 
 ```
 src/
-  pages/
-    ClientsPage.tsx   # Página principal com tabela e gráfico
-    LoginPage.tsx     # Página de login
-  state/
-    AppContext.tsx    # Contexto global, autenticação e estado de clientes
-  utils/
-    normalize.ts      # Funções de tratamento e agregação de dados
-  ui/
-    AddClientModal.tsx
-    SalesChart.tsx
-  services/
-    api.ts            # Consumo de dados (mock ou API real)
+  features/
+    clients/
+      api/          # Requisições e parsing
+      components/   # Pages, tabelas, modais, gráfico
+      lib/          # Normalizadores, utilitários, tipos
+  shared/
+    styles/         # Tema, global styles
+    ui/             # Componentes reutilizáveis
 public/
-  mock/clients.json   # Dados no formato original fornecido no desafio
+  mock/clients.json  # Dados em formato original (mock)
+tests/               # Testes unitários
 ```
 
 ---
 
-## 📊 API (Mock)
+## 🧪 Testes
 
-Por padrão, o projeto consome o arquivo `public/mock/clients.json`, que simula a resposta real do endpoint.  
-Para usar uma API real, basta editar `src/services/api.ts` e alterar `fetchClients()` e `fetchStats()`.
+Execute todos os testes com cobertura:
+```bash
+npm run test
+```
 
----
-
-## 🎨 Design
-
-- Tema escuro inspirado na paleta do [site da Avantsoft](https://avantsoft.com.br/pt-br/#portfolioSection).
-- Layout responsivo.
-- Estilização com **styled-components**.
-
----
-
-## 🧪 Possíveis melhorias
-
-- Validação de formulários com Zod.
-- Ordenação avançada na tabela.
-- Persistência de novos clientes no backend real.
-- Paginação.
+Para modo contínuo (watch):
+```bash
+npm run test:watch
+```
 
 ---
 
-## 📄 Licença
+## 🪄 Formatação de código
 
-Este projeto é apenas para fins de avaliação técnica.
+Formate todos os arquivos com:
+```bash
+npm run format
+```
+
+---
+
+## 📈 Possíveis melhorias
+ 
+- Ordenação e filtros mais avançados.  
+- Paginação e persistência dos clientes (backend real).  
+- Testes adicionais (componentes, hooks).  
+- Virtualização de lista para performance em casos com muitos clientes.
+
+---
+
+## 📜 Licença
+
+Projeto criado exclusivamente para fins de avaliação técnica.
